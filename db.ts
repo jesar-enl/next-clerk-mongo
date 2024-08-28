@@ -33,7 +33,7 @@ export const connectToDatabase = async () => {
     cached.promise = cached.promise || mongoose.connect(MONGODB_URL, {
       dbName: 'clerkMongoDB',
       bufferCommands: false,
-      connectTimeoutMS: 300000,
+      connectTimeoutMS: 30000,
     });
   }
 
