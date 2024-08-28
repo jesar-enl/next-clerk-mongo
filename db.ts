@@ -1,6 +1,6 @@
 import mongoose, { Mongoose } from 'mongoose';
 
-const MONGODB_URL = process.env.MONGODB_URL || '';
+const MONGODB_URL = process.env.MONGODB_URL!;
 
 interface MongooseConnector {
   connect: Mongoose | null;
@@ -15,7 +15,7 @@ if (!cached) {
 
 /**
  * Connects to the database.
- * 
+ *
  * @returns A promise that resolves to the database connection.
  */
 export const connectToDatabase = async () => {
@@ -23,20 +23,14 @@ export const connectToDatabase = async () => {
     return cached.connect;
   }
 
-  if (!cached.promise) {
-    const opts = {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-      bufferCommands: false,
-    };
-
-    cached.promise = cached.promise || mongoose.connect(MONGODB_URL, {
+  cached.promise =
+    cached.promise ||
+    mongoose.connect(MONGODB_URL, {
       dbName: 'clerkMongoDB',
       bufferCommands: false,
       connectTimeoutMS: 30000,
     });
-  }
 
   cached.connect = await cached.promise;
   return cached.connect;
-}
+};
